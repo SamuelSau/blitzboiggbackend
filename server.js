@@ -11,53 +11,6 @@ const getSummonerInfo = require('./controllers/getSummonerInfo')
 app.use(cors());
 //Routes
 
-//Returns summonerid, accountid, and puuid
-// app.get('/summoners/:region/:summonerName', async (req, res) => {
-// 	const summonerName = req.params.summonerName;
-// 	const region = req.params.region;
-// 	await axios
-// 		.get(
-// 			`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`,
-// 			{
-// 				headers: {
-// 					'X-Riot-Token': API_KEY,
-// 				},
-// 			}
-// 		)
-// 		.then((response) => {
-// 			const summonerId = response.data.id;
-// 			const puuid = response.data.puuid;
-// 			const accountid = response.data.accountId;
-// 			res.json(`Summonerid: ${summonerId}, Puuid: ${puuid}, Accountid: ${accountid}`);
-// 			//store the summonerid and puuid in a database, go retrieve it for the match endpoint dont respond with json with summonerid and puuid to client?
-// 		})
-// 		.catch((error) => {
-// 			res.status(500).send(error);
-// 		});
-// });
-
-// //Returns rank, summonerName, wins/losses using summonerid
-// app.get('/entries/:summonerid', async (req, res) => {
-// 	const summonerid = req.params.summonerid;
-// 	axios
-// 		.get(
-// 			`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerid}`,
-// 			{
-// 				headers: {
-// 					Origin: 'https://developer.riotgames.com',
-// 					'X-Riot-Token': API_KEY,
-// 				},
-// 			}
-// 		)
-// 		.then((response) => {
-// 			res.json(response.data);
-
-// 		})
-// 		.catch((error) => {
-// 			res.status(500).send(error);
-// 		});
-// });
-
 // //Returns upto 20 of the recent summoner's matches using puuid
 // app.get('/match-history/:puuid', async (req, res) => {
 // 	const puuid = req.params.puuid
@@ -100,14 +53,11 @@ app.use(cors());
 // 		});
 // });
 
-// Require the database module
-// const database = require('./database');
-
 // Set up routes for handling requests
 app.get('/summoners/:summonerName', async (req, res) => {
 	const summonerName = req.params.summonerName;
 	try {
-		// Use the getSummonerInfo method to retrieve the player information
+		// Use the getSummonerInfo method to retrieve the player's information
 		const summonerInfo = await getSummonerInfo(summonerName);
 		res.send(summonerInfo);
 		res.status(200)
@@ -125,7 +75,7 @@ app.get('/matches/:id', (req, res) => {
 		.getMatch(matchId)
 		.then((match) => res.send(match))
 		.catch((err) => res.status(500).send(err));
-	//displayMatch();
+	
 });
 
 app.get('/performance/:id', (req, res) => {
@@ -135,14 +85,12 @@ app.get('/performance/:id', (req, res) => {
 		.then((performance) =>
 			res.send(performance).catch((err) => res.status(500).send(err))
 		);
-	//displayPerformance();
+	
 });
 
-
-//Connect to MongoDB
-
-
-// Set up connection to MongoDB database using Mongoose
+/*	Connect to MongoDB
+	Set up connection using Mongoose
+*/
 mongoose.connect(CONNECTION_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
