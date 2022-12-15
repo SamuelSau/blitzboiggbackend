@@ -13,7 +13,6 @@ axios.interceptors.request.use(function (config) {
   });
   
 const getSummonerInfo = async (summonerName) => {
-	// Use the League of Legends API to retrieve player information
 	
 	// Use the League of Legends API to retrieve player information
 	const summonerIdResponse = await axios.get(

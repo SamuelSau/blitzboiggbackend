@@ -8,9 +8,11 @@ const app = express();
 const mongoose = require('mongoose')
 const getSummonerInfo = require('./controllers/getSummonerInfo')
 
+//Middleware for JSON and urlencoded parsers
 app.use(cors());
-//Routes
+app.use(express.urlencoded({ extended: true }));
 
+//Routes
 // //Returns upto 20 of the recent summoner's matches using puuid
 // app.get('/match-history/:puuid', async (req, res) => {
 // 	const puuid = req.params.puuid
@@ -66,7 +68,7 @@ app.get('/summoners/:summonerName', async (req, res) => {
 		res.status(500).send(err);
 		console.log(err)
 	  }
-	});
+	}); 
 
 app.get('/matches/:id', (req, res) => {
 	const matchId = req.params.id;
