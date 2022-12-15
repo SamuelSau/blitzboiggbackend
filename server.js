@@ -104,14 +104,19 @@ const database = require('./database');
 const { displayPlayer, displayMatch, displayPerformance } = require('./view');
 
 // Set up routes for handling requests
-app.get('/players/:id', (req, res) => {
+app.get('/players/:id', async (req, res) => {
 	const playerId = req.params.id;
-	// Use the getPlayer method to retrieve the player information
-	database
-		.getPlayer(playerId)
-		.then((player) => res.send(player))
-		.catch((err) => res.status(500).send(err));
-});
+	try {
+		// Use the getSummonerInfo method to retrieve the player information
+		const player = await database.getSummonerInfo(playerId);
+		res.send(player);
+		res.statusCode(200)
+
+	  } catch (err) {
+		res.status(500).send(err);
+		console.log(err)
+	  }
+	});
 
 app.get('/matches/:id', (req, res) => {
 	const matchId = req.params.id;

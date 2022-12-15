@@ -25,8 +25,28 @@ db.once('open', () => {
 	console.log('Connected to the database successfully.');
 });
 
-const getPlayer = async (playerId) => {
+//Defined Players model - be sure to move into models folder
+const Players = mongoose.model('players', {
+	summonerId: String,
+	name: String,
+	tier: String,
+	rank: String,
+	wins: {
+		type: Number,
+		required: true,
+		default: 0,
+	},
+	losses: {
+		type: Number,
+		required: true,
+		default: 0,
+	},
+});
+
+
+const getSummonerInfo = async (playerId) => {
 	// Use the League of Legends API to retrieve player information
+	
 	const response = await axios.get(
 		`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${playerId}`,
 		{
@@ -35,33 +55,19 @@ const getPlayer = async (playerId) => {
 			},
 		}
 	);
-
-	const Players = mongoose.model('players', {
-		id: {
-			type: Number,
-			required: false,
-			default: null,
-		  },
-		  name: String,
-		  tier: String,
-		  rank: String,
-		  wins: {
-			type: Number,
-			required: false,
-			default: 0,
-		  },
-		  losses: {
-			type: Number,
-			required: false,
-			default: 0,
-		  },
-	});
-
+	
 	// Parse the response data to extract the player information
 	const playerData = response.data[0];
-	
+
+	if(!playerData){
+		return {
+			statusCode: 404,
+			message: 'Summoner not found'
+		}
+	}
+
 	const player = {
-		id: playerData.id,
+		summonerId: playerData.summonerId,
 		name: playerData.summonerName,
 		tier: playerData.tier,
 		rank: playerData.rank,
@@ -69,15 +75,23 @@ const getPlayer = async (playerId) => {
 		losses: playerData.losses,
 	};
 
-	// Create a new player document using the player data
-	const newPlayer = new Players(player);
-	return newPlayer.save((error, doc) => {
-		if (error) {
-			console.log(error);
-		} else {
-			console.log('Player document saved successfully.');
-		}
-	});
+	const foundPlayer = await Players.findOne({ summonerId: playerData.summonerId });
+
+	if(!foundPlayer) {
+		// Create a new player document using the player data
+		const newPlayer = new Players(player);
+		return newPlayer.save((error, doc) => {
+			if (error) {
+				console.log(error);
+			} else {
+				console.log('Player document saved successfully.');
+			}
+		});
+	}
+	else {
+		return foundPlayer
+	}
+	
 };
 
 const getMatch = async (matchId) => {
@@ -133,4 +147,4 @@ const getPerformance = async (matchId, playerId) => {
 	console.log(performanceDoc);
 };
 
-module.exports = { getPlayer, getMatch, getPerformance };
+module.exports = { getSummonerInfo, getMatch, getPerformance };
