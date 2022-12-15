@@ -53,7 +53,13 @@ const getSummonerInfo = async (summonerName) => {
 		});
 	}
 	else {
-		return returnedSummoner
+		return {
+			name: foundSummoner.name,
+			tier: foundSummoner.tier,
+			rank: foundSummoner.rank,
+			wins: foundSummoner.wins,
+			losses: foundSummoner.losses
+		  };
 	}
 	
 };
