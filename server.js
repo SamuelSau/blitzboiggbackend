@@ -1,13 +1,14 @@
 const express = require('express');
 const PORT = process.env.PORT || 3000;
-const axios = require('axios');
 const dotenv = require('dotenv').config();
 const cors = require('cors');
-
+const DATABASE_NAME = process.env.DATABASE_NAME;
+const CONNECTION_URI = process.env.CONNECTION_URI;
 const app = express();
-app.use(cors());
-const API_KEY = process.env.API_KEY;
+const mongoose = require('mongoose')
+const getSummonerInfo = require('./controllers/getSummonerInfo')
 
+app.use(cors());
 //Routes
 
 //Returns summonerid, accountid, and puuid
@@ -100,17 +101,16 @@ const API_KEY = process.env.API_KEY;
 // });
 
 // Require the database module
-const database = require('./database');
-const { displayPlayer, displayMatch, displayPerformance } = require('./view');
+// const database = require('./database');
 
 // Set up routes for handling requests
-app.get('/players/:id', async (req, res) => {
-	const playerId = req.params.id;
+app.get('/summoners/:summonerName', async (req, res) => {
+	const summonerName = req.params.summonerName;
 	try {
 		// Use the getSummonerInfo method to retrieve the player information
-		const player = await database.getSummonerInfo(playerId);
-		res.send(player);
-		res.statusCode(200)
+		const summonerInfo = await getSummonerInfo(summonerName);
+		res.send(summonerInfo);
+		res.status(200)
 
 	  } catch (err) {
 		res.status(500).send(err);
@@ -137,6 +137,30 @@ app.get('/performance/:id', (req, res) => {
 		);
 	//displayPerformance();
 });
+
+
+//Connect to MongoDB
+
+
+// Set up connection to MongoDB database using Mongoose
+mongoose.connect(CONNECTION_URI, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	dbName: DATABASE_NAME,
+});
+
+const db = mongoose.connection;
+
+// Check for connection errors
+db.on('error', (error) => {
+	console.error(error);
+});
+
+// If the connection is successful, log a message
+db.once('open', () => {
+	console.log('Connected to the database successfully.');
+});
+
 
 app.listen(PORT, () => {
 	console.log(`Serving running on port ${PORT}`);

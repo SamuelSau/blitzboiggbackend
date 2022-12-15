@@ -26,73 +26,73 @@ db.once('open', () => {
 });
 
 //Defined Players model - be sure to move into models folder
-const Players = mongoose.model('players', {
-	summonerId: String,
-	name: String,
-	tier: String,
-	rank: String,
-	wins: {
-		type: Number,
-		required: true,
-		default: 0,
-	},
-	losses: {
-		type: Number,
-		required: true,
-		default: 0,
-	},
-});
+// const Players = mongoose.model('players', {
+// 	summonerId: String,
+// 	name: String,
+// 	tier: String,
+// 	rank: String,
+// 	wins: {
+// 		type: Number,
+// 		required: true,
+// 		default: 0,
+// 	},
+// 	losses: {
+// 		type: Number,
+// 		required: true,
+// 		default: 0,
+// 	},
+// });
 
-
-const getSummonerInfo = async (playerId) => {
-	// Use the League of Legends API to retrieve player information
+// const getSummonerInfo = async (playerId) => {
+// 	// Use the League of Legends API to retrieve player information
 	
-	const response = await axios.get(
-		`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${playerId}`,
-		{
-			headers: {
-				'X-Riot-Token': API_KEY,
-			},
-		}
-	);
+// 	const response = await axios.get(
+// 		`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${playerId}`,
+// 		{
+// 			headers: {
+// 				'X-Riot-Token': API_KEY,
+// 			},
+// 		}
+// 	);
 	
-	// Parse the response data to extract the player information
-	const playerData = response.data[0];
+// 	// Parse the response data to extract the player information
+// 	const playerData = response.data[0];
 
-	if(!playerData){
-		return {
-			statusCode: 404,
-			message: 'Summoner not found'
-		}
-	}
+	// if(!playerData){
+	// 	return {
+	// 		response.statusCode = 404,
+	// 		response.message = 'Summoner not found',
+	// 		return response;
+	// 	}
+	// }
 
-	const player = {
-		summonerId: playerData.summonerId,
-		name: playerData.summonerName,
-		tier: playerData.tier,
-		rank: playerData.rank,
-		wins: playerData.wins,
-		losses: playerData.losses,
-	};
+// 	const player = {
+// 		summonerId: playerData.summonerId,
+// 		name: playerData.summonerName,
+// 		tier: playerData.tier,
+// 		rank: playerData.rank,
+// 		wins: playerData.wins,
+// 		losses: playerData.losses,
+// 	};
 
-	const foundPlayer = await Players.findOne({ summonerId: playerData.summonerId });
+// 	const foundPlayer = await Summoners.findOne({ summonerId: playerData.summonerId });
 
-	if(!foundPlayer) {
-		// Create a new player document using the player data
-		const newPlayer = new Players(player);
-		return newPlayer.save((error, doc) => {
-			if (error) {
-				console.log(error);
-			} else {
-				console.log('Player document saved successfully.');
-			}
-		});
-	}
-	else {
-		return foundPlayer
-	}
+// 	if(!foundPlayer) {
+// 		// Create a new player document using the player data
+// 		const newPlayer = new Players(player);
+// 		return newPlayer.save((error, doc) => {
+// 			if (error) {
+// 				console.log(error);
+// 			} else {
+// 				console.log('Player document saved successfully.');
+// 			}
+// 		});
+// 	}
+// 	else {
+// 		return foundPlayer
+// 	}
 	
-};
+// };
 
 const getMatch = async (matchId) => {
 	// Use the League of Legends API to retrieve match information
