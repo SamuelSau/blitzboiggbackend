@@ -3,29 +3,46 @@ const axios = require('axios');
 const dotenv = require('dotenv').config();
 const API_KEY = process.env.API_KEY;
 
-// Use the axios.interceptors.request property to add an interceptor
+//Set headers for each axios API call for League of Legends API
 axios.interceptors.request.use(function (config) {
-	// Set the X-Riot-Token header in the config object
+
 	config.headers['X-Riot-Token'] = API_KEY;
-	config.headers['Content-Type'] = 'application/json';
-	// Return the modified config object
+	//config.headers['Content-Type'] = 'application/json';
+	
 	return config;
   });
   
 const getSummonerInfo = async (summonerName) => {
-	
-	// Use the League of Legends API to retrieve player information
+
+// @desc Use summoner name to retrieve summoner's ID
 	const summonerIdResponse = await axios.get(
 	`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`
   );
   
-  // Use the summoner ID to retrieve player's stats
+// @desc Use summonerID from summonerIDResponse to retrieve player's stats
   const summmonerStatsResponse = await axios.get(
 	`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerIdResponse.data.id}`
   );
-	// Parse the response data to extract the player information
-	const summonerData = summmonerStatsResponse.data[0];
 
+// @desc Use PUUID from summonerIdResponse to retrieve list of 20 recent matches
+	const matchIdResponse = await axios.get(
+		`https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${summonerIdResponse.data.puuid}/ids?start=0&count=1`
+	);
+
+// @desc Use matchId from matchIdResponse to retrieve details of each match
+  for (let i = 0; i < matchIdResponse.data.length; i++) {
+    // Use the match ID to retrieve details of the match
+    const matchStatsResponse = await axios.get(
+      `https://americas.api.riotgames.com/lol/match/v5/matches/${matchIdResponse.data[i]}`
+    );
+
+	
+}
+
+	// Parse the response data to extract the player and match information
+	const summonerData = summmonerStatsResponse.data[0];
+	//const matchData = matchStatsResponse.data[0];
+	//console.log(matchData)
 	const summoner = {
 		summonerId: summonerData.summonerId,
 		name: summonerData.summonerName,
