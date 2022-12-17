@@ -45,6 +45,7 @@ const getSummonerInfo = async (summonerName) => {
 		summonerId: summonerData.summonerId,
 		puuid: summonerData.puuid,
 		name: summonerData.summonerName,
+		profileIconId: summonerData.profileIconId,
 		tier: summonerData.tier,
 		rank: summonerData.rank,
 		wins: summonerData.wins,
@@ -70,6 +71,7 @@ const getSummonerInfo = async (summonerName) => {
 	} else {
 		return {
 			name: foundSummoner.name,
+			profileIconId: foundSummoner.profileIconId,
 			tier: foundSummoner.tier,
 			rank: foundSummoner.rank,
 			wins: foundSummoner.wins,
