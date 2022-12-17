@@ -13,29 +13,29 @@ axios.interceptors.request.use(function (config) {
 
 const getSummonerInfo = async (summonerName) => {
 	// @desc Use summoner name to retrieve summoner's ID
-	const summonerIdResponse = await axios.get(
-		`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`
-	);
+	// const summonerIdResponse = await axios.get(
+	// 	`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}`
+	// );
 
-	// @desc Use summonerID from summonerIDResponse to retrieve player's stats
-	const summmonerStatsResponse = await axios.get(
-		`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerIdResponse.data.id}`
-	);
+	// // @desc Use summonerID from summonerIDResponse to retrieve player's stats
+	// const summmonerStatsResponse = await axios.get(
+	// 	`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerIdResponse.data.id}`
+	// );
 
-	// @desc Use PUUID from summonerIdResponse to retrieve list of 20 recent matches
-	const matchIdResponse = await axios.get(
-		`https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${summonerIdResponse.data.puuid}/ids?start=0&count=10`
-	);
+	// // @desc Use PUUID from summonerIdResponse to retrieve list of 20 recent matches
+	// const matchIdResponse = await axios.get(
+	// 	`https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${summonerIdResponse.data.puuid}/ids?start=0&count=10`
+	// );
 
-	// @desc Use matchId from matchIdResponse to retrieve details of each match
-	for (let i = 0; i < matchIdResponse.data.length; i++) {
-		// Use the match ID to retrieve details of the match
-		const matchStatsResponse = await axios.get(
-			`https://americas.api.riotgames.com/lol/match/v5/matches/${matchIdResponse.data[i]}`
-		);
+	// // @desc Use matchId from matchIdResponse to retrieve details of each match
+	// for (let i = 0; i < matchIdResponse.data.length; i++) {
+	// 	// Use the match ID to retrieve details of the match
+	// 	const matchStatsResponse = await axios.get(
+	// 		`https://americas.api.riotgames.com/lol/match/v5/matches/${matchIdResponse.data[i]}`
+	// 	);
 
 		
-	}
+	// }
 
 	// Parse the response data to extract the player and match information
 	const summonerData = summmonerStatsResponse.data[0];

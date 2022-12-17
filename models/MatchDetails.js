@@ -44,7 +44,39 @@ const MatchDetails = mongoose.model('matchdetails', {
             ],
             style: Number
         }
-    ]
+    ], 
+	teams: [
+        {
+            bans: [
+                {
+                    championId: Number,
+                }
+            ],
+            objectives: {
+                baron: {
+                    kills: Number,
+                },
+                dragon: {
+                    kills: Number,
+                },
+                inhibitor: {
+                    kills: Number,
+                },
+                riftHerald: {
+                    first: Boolean,
+                    kills: Number,
+                },
+                tower: {
+                    first: Boolean,
+                    kills: Number,
+                }
+            },
+            teamId: Number,
+            win: Boolean,
+        }
+    ],
+    tournamentCode: String,
+
 });
 
 module.exports = MatchDetails;

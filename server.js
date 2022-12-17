@@ -13,49 +13,6 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 //Routes
-// //Returns upto 20 of the recent summoner's matches using puuid
-// app.get('/match-history/:puuid', async (req, res) => {
-// 	const puuid = req.params.puuid
-// 	await axios
-// 		.get(
-// 			`https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=20`,
-// 			{
-// 				headers: {
-// 					'X-Riot-Token': API_KEY,
-// 				},
-// 			}
-// 		)
-// 		.then((response) => {
-// 			res.json(response.data);
-// 		})
-// 		.catch((error) => {
-// 			res.status(500).send(error);
-// 		});
-// });
-
-// // Return data from specific match history using matchid
-// app.get('/match-history/:summonerid/:matchid', async (req, res) => {
-
-// 	const matchid = req.params.matchid;
-
-// 	await axios
-// 		.get(
-// 			`https://americas.api.riotgames.com/lol/match/v5/matches/${matchid}`,
-// 			{
-// 				headers: {
-// 					'X-Riot-Token': API_KEY,
-// 				},
-// 			}
-// 		)
-// 		.then((response) => {
-// 			res.json(response.data);
-// 		})
-// 		.catch((error) => {
-// 			res.status(500).send(error);
-// 		});
-// });
-
-// Set up routes for handling requests
 app.get('/summoners/:summonerName', async (req, res) => {
 	const summonerName = req.params.summonerName;
 	try {
@@ -69,26 +26,6 @@ app.get('/summoners/:summonerName', async (req, res) => {
 		console.log(err)
 	  }
 	}); 
-
-// app.get('/matches/:id', (req, res) => {
-// 	const matchId = req.params.id;
-// 	// Use the getMatch method to retrieve the match information
-// 	database
-// 		.getMatch(matchId)
-// 		.then((match) => res.send(match))
-// 		.catch((err) => res.status(500).send(err));
-	
-// });
-
-// app.get('/performance/:id', (req, res) => {
-// 	const performanceId = req.params.id;
-// 	database
-// 		.getPerformance(performanceId)
-// 		.then((performance) =>
-// 			res.send(performance).catch((err) => res.status(500).send(err))
-// 		);
-	
-// });
 
 /*	Connect to MongoDB
 	Set up connection using Mongoose
