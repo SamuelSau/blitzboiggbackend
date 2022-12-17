@@ -70,25 +70,25 @@ app.get('/summoners/:summonerName', async (req, res) => {
 	  }
 	}); 
 
-app.get('/matches/:id', (req, res) => {
-	const matchId = req.params.id;
-	// Use the getMatch method to retrieve the match information
-	database
-		.getMatch(matchId)
-		.then((match) => res.send(match))
-		.catch((err) => res.status(500).send(err));
+// app.get('/matches/:id', (req, res) => {
+// 	const matchId = req.params.id;
+// 	// Use the getMatch method to retrieve the match information
+// 	database
+// 		.getMatch(matchId)
+// 		.then((match) => res.send(match))
+// 		.catch((err) => res.status(500).send(err));
 	
-});
+// });
 
-app.get('/performance/:id', (req, res) => {
-	const performanceId = req.params.id;
-	database
-		.getPerformance(performanceId)
-		.then((performance) =>
-			res.send(performance).catch((err) => res.status(500).send(err))
-		);
+// app.get('/performance/:id', (req, res) => {
+// 	const performanceId = req.params.id;
+// 	database
+// 		.getPerformance(performanceId)
+// 		.then((performance) =>
+// 			res.send(performance).catch((err) => res.status(500).send(err))
+// 		);
 	
-});
+// });
 
 /*	Connect to MongoDB
 	Set up connection using Mongoose
