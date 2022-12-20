@@ -1,7 +1,9 @@
 const MatchList = require('../models/MatchList');
 const MatchDetails = require('../models/MatchDetails');
+const getParticipantId = require('../controllers/getParticipantId')
 const axios = require('axios');
 const mongoose = require('mongoose');
+
 
 async function queryMatches(queriedSummoner) {
 	try {
@@ -42,15 +44,100 @@ async function queryMatches(queriedSummoner) {
 						//console.log(matchId); array of matchIds
 
 						//Query matchDetails using matchId
-						// const matchDetail = await MatchDetails.findOne({ matchId: matchId });
-						// if (matchDetail) return queriedSummoner... gameCreation...
+						const matchDetail = await MatchDetails.findOne({
+							matchId: matchId,
+						});
+
+						//If that matchId exist in our database
+						if (matchDetail) {
+							return {
+								name: queriedSummoner.name,
+								profileIconId: queriedSummoner.profileIconId,
+								queueType: queriedSummoner.queueType,
+								rank: queriedSummoner.rank,
+								tier: queriedSummoner.tier,
+								wins: queriedSummoner.wins,
+								losses: queriedSummoner.losses,
+								matchId: matchDetail.matchId,
+								gameCreation: matchDetail.gameCreation,
+								gameDuration: matchDetail.gameDuration,
+								gameMode: matchDetail.gameMode,
+								gameType: matchDetail.gameType,
+								assists: matchDetail.assists,
+								kills: matchDetail.kills,
+								role: matchDetail.role,
+								champLevel: matchDetail.champLevel,
+								championId: matchDetail.championId,
+								championName: matchDetail.championNam,
+								deaths: matchDetail.deaths,
+								item0: matchDetail.item0,
+								item1: matchDetail.item1,
+								item2: matchDetail.item2,
+								item3: matchDetail.item3,
+								item4: matchDetail.item4,
+								item5: matchDetail.item5,
+								item6: matchDetail.item6,
+								summoner1Casts: matchDetail.summoner1Casts,
+								summoner1Id: matchDetail.summoner1Id,
+								summoner2Casts: matchDetail.summoner2Casts,
+								summoner2Id: matchDetail.summoner2Id,
+								summonerId: matchDetail.summonerId,
+								summonerLevel: matchDetail.summonerLevel,
+								summonerName: matchDetail.summonerName,
+								totalDamageDealtToChampions: matchDetail.totalDamageDealtToChampions,
+								teamId: matchDetail.teamId,
+								totalMinionsKilled: matchDetail.totalMinionsKilled,
+								killParticipation: matchDetail.killParticipation,
+								kda: matchDetail.kda,
+							};
+						}
 						//else: matchStatusResponse API call, and write into the matchDetails collection, return data to client
 						// console.log(matchDetail.gameCreation)
 
 						const matchStatsResponse = await axios.get(
 							`https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}`
 						);
-						console.log(matchStatsResponse.data['info']['gameCreation']);
+						
+						console.log(matchStatsResponse.data['metadata']['participants'])
+						
+						const participantIndex = await getParticipantId(matchStatsResponse.data['metadata']['participants'], puuid) 
+						console.log(matchStatsResponse.data['info']['participants'][participantIndex]['assists'],)
+						
+						const matchInformation = { 
+							matchId: matchStatsResponse.matchId,
+							gameCreation: matchStatsResponse.data['info']['gameCreation'],
+							gameDuration: matchStatsResponse.data['info']['gameDuration'],
+							gameMode: matchStatsResponse.data['info']['gameMode'],
+							gameType: matchStatsResponse.data['info']['gameType'],
+							assists:
+								matchStatsResponse.data['info']['participants'][participantIndex]['assists'],
+							kills: matchDetail.kills,
+							role: matchDetail.role,
+							champLevel: matchDetail.champLevel,
+							championId: matchDetail.championId,
+							championName: matchDetail.championNam,
+							deaths: matchDetail.deaths,
+							item0: matchDetail.item0,
+							item1: matchDetail.item1,
+							item2: matchDetail.item2,
+							item3: matchDetail.item3,
+							item4: matchDetail.item4,
+							item5: matchDetail.item5,
+							item6: matchDetail.item6,
+							summoner1Casts: matchDetail.summoner1Casts,
+							summoner1Id: matchDetail.summoner1Id,
+							summoner2Casts: matchDetail.summoner2Casts,
+							summoner2Id: matchDetail.summoner2Id,
+							summonerId: matchDetail.summonerId,
+							summonerLevel: matchDetail.summonerLevel,
+							summonerName: matchDetail.summonerName,
+							totalDamageDealtToChampions:
+								matchDetail.totalDamageDealtToChampions,
+							teamId: matchDetail.teamId,
+							totalMinionsKilled: matchDetail.totalMinionsKilled,
+							killParticipation: matchDetail.killParticipation,
+							kda: matchDetail.kda,
+						};
 					});
 				});
 			}
