@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const MatchDetails = mongoose.model('matchdetails', {
+    matchId: String,
 	gameCreation: Number,
 	gameDuration: Number,
 	gameMode: String,

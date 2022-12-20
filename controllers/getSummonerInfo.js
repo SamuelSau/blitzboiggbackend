@@ -16,7 +16,7 @@ axios.interceptors.request.use(function (config) {
 const getSummonerInfo = async (summonerName) => {
 	
 	const queriedSummoner = await querySummoner(summonerName);
-	console.log(queriedSummoner.puuid)
+	//console.log(queriedSummoner.puuid)
 	const queriedMatches = await queryMatches(queriedSummoner);
 	console.log(queriedMatches)
 };
