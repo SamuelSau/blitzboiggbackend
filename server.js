@@ -12,7 +12,7 @@ const getSummonerInfo = require('./controllers/getSummonerInfo')
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
-//Routes
+//Route
 app.get('/summoners/:summonerName', async (req, res) => {
 	const summonerName = req.params.summonerName;
 	try {
