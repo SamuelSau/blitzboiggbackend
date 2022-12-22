@@ -1,31 +1,31 @@
 const express = require('express');
+const app = express();
 const PORT = process.env.PORT || 3000;
 const dotenv = require('dotenv').config();
 const cors = require('cors');
 const DATABASE_NAME = process.env.DATABASE_NAME;
 const CONNECTION_URI = process.env.CONNECTION_URI;
-const app = express();
-const mongoose = require('mongoose')
-const getSummonerInfo = require('./controllers/getSummonerInfo')
+const mongoose = require('mongoose');
+const getSummonerInfo = require('./controllers/getSummonerInfo');
 
-//Middleware for JSON and urlencoded parsers
+//Middlewares
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 //Route
 app.get('/summoners/:summonerName', async (req, res) => {
 	const summonerName = req.params.summonerName;
 	try {
-		// Use the getSummonerInfo method to retrieve the player's information
+		// Retrieve player's (or summoner's) information such as wins, losses, rank, tier
 		const summonerInfo = await getSummonerInfo(summonerName);
 		res.send(summonerInfo);
-		res.status(200)
-
-	  } catch (err) {
+		res.status(200);
+	} catch (err) {
 		res.status(500).send(err);
-		console.log(err)
-	  }
-	}); 
+		console.log(err);
+	}
+});
 
 /*	Connect to MongoDB
 	Set up connection using Mongoose
@@ -47,7 +47,6 @@ db.on('error', (error) => {
 db.once('open', () => {
 	console.log('Connected to the database successfully.');
 });
-
 
 app.listen(PORT, () => {
 	console.log(`Serving running on port ${PORT}`);

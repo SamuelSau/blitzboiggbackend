@@ -3,6 +3,13 @@ const MatchList = require('../models/MatchList');
 const axios = require('axios');
 const mongoose = require('mongoose');
 
+/* 
+DESCRIPTION: Call Riot API endpoint using summonerName
+			 If summonerId exist in database we query. 
+			 Else, make another API call to write and save into documents for future queries.
+			 Return data for queryMatches method.
+*/
+
 async function querySummoner(summonerName) {
 	try {
 		// Use summonerName to retrieve player's summonerId

@@ -5,6 +5,13 @@ const getParticipantId = require('./getParticipantId');
 const axios = require('axios');
 const mongoose = require('mongoose');
 
+/* 
+DESCRIPTION: Use data from querySummoner method such as puuid for Riot API call. 
+			 Returns array of recent matchIds that we can loop through and query from database. 
+			 If matchIds do not exist in database, then write and save into document.
+			 Return data to client from querySummoner and matchDetailsArray that extracts all info from each matchId.
+*/
+
 async function queryMatches(queriedSummoner) {
 	try {
 		const puuid = queriedSummoner.puuid;
