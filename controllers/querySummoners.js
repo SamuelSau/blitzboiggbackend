@@ -26,6 +26,7 @@ async function querySummoner(summonerName) {
 		if (player) {
 			return {
 				name: player.name,
+				summonerLevel: player.summonerLevel,
 				puuid: player.puuid,
 				profileIconId: player.profileIconId,
 				queueType: player.queueType,
@@ -43,21 +44,30 @@ async function querySummoner(summonerName) {
 		);
 
 		// Parse the response data to extract the player and match information
-		const summonerData = summmonerStatsResponse.data[0];
+		const accountId = summonerIdResponse.data['accountId'];
+		const revisionDate = summonerIdResponse.data['revisionDate'];
 		const profileIconId = summonerIdResponse.data['profileIconId'];
 		const puuid = summonerIdResponse.data['puuid'];
 		const playerName = summonerIdResponse.data['name'];
+		const playerId = summonerIdResponse.data['id'] 
+		const summonerLevel = summonerIdResponse.data['summonerLevel'] 
+		const summonerData = summmonerStatsResponse.data[0];
 
 		const summoner = {
 			name: playerName,
-			summonerId: summonerData.summonerId,
+			accountId: accountId,
+			revisionDate: revisionDate,
+			summonerId: playerId,
 			puuid: puuid,
 			profileIconId: profileIconId,
+			summonerLevel: summonerLevel,
+			/*
 			queueType: summonerData.queueType,
 			tier: summonerData.tier,
 			rank: summonerData.rank,
 			wins: summonerData.wins,
 			losses: summonerData.losses,
+			*/
 		};
 
 		const match = {
@@ -83,11 +93,14 @@ async function querySummoner(summonerName) {
 			name: playerName,
 			puuid: puuid,
 			profileIconId: profileIconId,
+			summonerLevel: summonerLevel,
+			/*
 			queueType: summonerData.queueType,
 			tier: summonerData.tier,
 			rank: summonerData.rank,
 			wins: summonerData.wins,
 			losses: summonerData.losses,
+			*/
 		};
 	} catch (error) {
 		console.error(error)

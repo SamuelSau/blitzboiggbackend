@@ -3,7 +3,14 @@ const mongoose = require('mongoose');
 const Summoners = mongoose.model('summoners', {
 	summonerId: String,
 	puuid: String,
-	queueType: String,
+	accountId: String,
+	revisionDate: Number,
+	summonerLevel: Number,
+	queueType: {
+		type: String,
+		require: false,
+		default: '',
+	},
 	profileIconId: Number,
 	name: {
 		type: String,

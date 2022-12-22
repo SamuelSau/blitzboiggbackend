@@ -113,11 +113,14 @@ async function queryMatches(queriedSummoner) {
 		return {
 			name: queriedSummoner.name,
 			profileIconId: queriedSummoner.profileIconId,
+			summonerLevel: queriedSummoner.summonerLevel,
+			/*
 			queueType: queriedSummoner.queueType,
 			rank: queriedSummoner.rank,
 			tier: queriedSummoner.tier,
 			wins: queriedSummoner.wins,
 			losses: queriedSummoner.losses,
+			*/
 			matchDetailsArray,
 		};
 	} catch (error) {
