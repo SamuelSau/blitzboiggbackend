@@ -16,8 +16,16 @@ const Summoners = mongoose.model('summoners', {
 		type: String,
 		required: true,
 	},
-	tier: String,
-	rank: String,
+	tier: {
+		type: String,
+		require: false,
+		default: '',
+	},
+	rank: {
+		type: String,
+		require: false,
+		default: '',
+	},
 	wins: {
 		type: Number,
 		required: true,
@@ -30,4 +38,4 @@ const Summoners = mongoose.model('summoners', {
 	},
 });
 
-module.exports = Summoners
+module.exports = Summoners;

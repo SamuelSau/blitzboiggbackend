@@ -61,13 +61,13 @@ async function querySummoner(summonerName) {
 			puuid: puuid,
 			profileIconId: profileIconId,
 			summonerLevel: summonerLevel,
-			/*
+			
 			queueType: summonerData.queueType,
 			tier: summonerData.tier,
 			rank: summonerData.rank,
 			wins: summonerData.wins,
 			losses: summonerData.losses,
-			*/
+			
 		};
 
 		const match = {
@@ -94,13 +94,13 @@ async function querySummoner(summonerName) {
 			puuid: puuid,
 			profileIconId: profileIconId,
 			summonerLevel: summonerLevel,
-			/*
+			
 			queueType: summonerData.queueType,
 			tier: summonerData.tier,
 			rank: summonerData.rank,
 			wins: summonerData.wins,
 			losses: summonerData.losses,
-			*/
+			
 		};
 	} catch (error) {
 		console.error(error)
