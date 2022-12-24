@@ -45,9 +45,8 @@ async function queryMatches(queriedSummoner) {
 				matchId: matchId,
 			});
 			//If matchIds are equal in matchList and matchDetail, then push data from match details to matchDetailsArray
-			if (queriedMatchDetails && queriedMatchDetails['matchId'] === matchId) {
+			if (queriedMatchDetails){
 				matchDetailsArray.push(queriedMatchDetails);
-			
 			} 
 			//If not, then make API calls and write into database 
 			else {
@@ -114,13 +113,11 @@ async function queryMatches(queriedSummoner) {
 			name: queriedSummoner.name,
 			profileIconId: queriedSummoner.profileIconId,
 			summonerLevel: queriedSummoner.summonerLevel,
-			
 			queueType: queriedSummoner.queueType,
 			rank: queriedSummoner.rank,
 			tier: queriedSummoner.tier,
 			wins: queriedSummoner.wins,
-			losses: queriedSummoner.losses,
-			
+			losses: queriedSummoner.losses,	
 			matchDetailsArray,
 		};
 	} catch (error) {

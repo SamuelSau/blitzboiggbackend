@@ -28,12 +28,13 @@ async function querySummoner(summonerName) {
 				name: player.name,
 				summonerLevel: player.summonerLevel,
 				puuid: player.puuid,
+				revisionDate: player.revisionDate,
 				profileIconId: player.profileIconId,
 				queueType: player.queueType,
 				rank: player.rank,
 				tier: player.tier,
 				wins: player.wins,
-				losses: player.losses,
+				losses: player.losses,	
 			};
 		}
 
@@ -41,7 +42,7 @@ async function querySummoner(summonerName) {
 		// Use summonerID from summonerIDResponse to retrieve player's stats
 		const summmonerStatsResponse = await axios.get(
 			`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summonerIdResponse.data.id}`
-		);
+		)
 
 		// Parse the response data to extract the player and match information
 		const accountId = summonerIdResponse.data['accountId'];
@@ -49,10 +50,19 @@ async function querySummoner(summonerName) {
 		const profileIconId = summonerIdResponse.data['profileIconId'];
 		const puuid = summonerIdResponse.data['puuid'];
 		const playerName = summonerIdResponse.data['name'];
-		const playerId = summonerIdResponse.data['id'] 
-		const summonerLevel = summonerIdResponse.data['summonerLevel'] 
-		const summonerData = summmonerStatsResponse.data[0];
+		const playerId = summonerIdResponse.data['id'];
+		const summonerLevel = summonerIdResponse.data['summonerLevel'];
+		const summonerData = summmonerStatsResponse.data; //is an array
 
+		//Handles empty response if summoner doesn't play certain queue gamemodes from LoL API
+		if(summonerData.length === 0){
+			summonerData.queueType = "UNKNOWN";
+			summonerData.tier = "UNKNOWN";
+			summonerData.rank = "UNKNOWN";
+			summonerData.wins = 0;
+			summonerData.losses = 0;
+		}
+		
 		const summoner = {
 			name: playerName,
 			accountId: accountId,
@@ -61,14 +71,13 @@ async function querySummoner(summonerName) {
 			puuid: puuid,
 			profileIconId: profileIconId,
 			summonerLevel: summonerLevel,
-			
 			queueType: summonerData.queueType,
 			tier: summonerData.tier,
 			rank: summonerData.rank,
 			wins: summonerData.wins,
 			losses: summonerData.losses,
-			
 		};
+
 
 		const match = {
 			puuid: puuid,
@@ -94,17 +103,25 @@ async function querySummoner(summonerName) {
 			puuid: puuid,
 			profileIconId: profileIconId,
 			summonerLevel: summonerLevel,
-			
 			queueType: summonerData.queueType,
 			tier: summonerData.tier,
 			rank: summonerData.rank,
 			wins: summonerData.wins,
 			losses: summonerData.losses,
-			
 		};
 	} catch (error) {
-		console.error(error)
-		return `${error} from your request`;
+		
+		if (error.request) {
+			console.log(error.request);
+		}
+
+		else if (error.response) {
+			console.log(error.response);
+		}
+
+		else {
+			console.log(error.message)
+		}
 	}
 }
 

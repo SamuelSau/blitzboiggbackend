@@ -1,39 +1,58 @@
 const mongoose = require('mongoose');
 
 const Summoners = mongoose.model('summoners', {
-	summonerId: String,
-	puuid: String,
-	accountId: String,
-	revisionDate: Number,
-	summonerLevel: Number,
+	summonerId: {
+		type: String,
+		required: true,
+	},
+	puuid: {
+		type: String,
+		required: true,
+	},
+	accountId: {
+		type: String,
+		required: true,
+	},
+	revisionDate: {
+		type: Number,
+		required: false,
+		default: 0,
+	},
+	summonerLevel: {
+		type: Number,
+		required: true,
+	},
 	queueType: {
 		type: String,
-		require: false,
-		default: '',
+		required: false,
+		default: 'UNKNOWN',
 	},
-	profileIconId: Number,
+	profileIconId: {
+		type: Number,
+		required: false,
+	},
 	name: {
 		type: String,
 		required: true,
 	},
 	tier: {
 		type: String,
-		require: false,
-		default: '',
+		required: false,
+		default: 'UNKNOWN',
 	},
 	rank: {
 		type: String,
-		require: false,
-		default: '',
+		required: false,
+		default: 'UNKNOWN',
 	},
 	wins: {
 		type: Number,
-		required: true,
+		required: false,
 		default: 0,
 	},
 	losses: {
 		type: Number,
-		required: true,
+		required: false,
 		default: 0,
 	},
 });
