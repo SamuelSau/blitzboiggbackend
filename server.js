@@ -19,6 +19,8 @@ app.get('/summoners/:summonerName', async (req, res) => {
 	try {
 		// Retrieve player's (or summoner's) information such as wins, losses, rank, tier
 		const summonerInfo = await getSummonerInfo(summonerName);
+		// Set the Content-Type header to application/json
+		res.setHeader('Content-Type', 'application/json');
 		res.send(summonerInfo);
 		res.status(200);
 	} catch (err) {

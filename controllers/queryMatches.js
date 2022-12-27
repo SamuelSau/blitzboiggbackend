@@ -43,7 +43,7 @@ async function queryMatches(queriedSummoner) {
 			//Compare matchId from MatchList and from MatchDetails document
 			const queriedMatchDetails = await MatchDetails.findOne({
 				matchId: matchId,
-			});
+			}).select('-_id -matchId -summonerId -__v')
 			//If matchIds are equal in matchList and matchDetail, then push data from match details to matchDetailsArray
 			if (queriedMatchDetails){
 				matchDetailsArray.push(queriedMatchDetails);
@@ -60,7 +60,8 @@ async function queryMatches(queriedSummoner) {
 				const teamId = matchStatsResponse.data['info']['participants'][participantIndex][ 'teamId' ];
 				const teamIndex = await getTeamId(teamId);
 
-				const matchInformation = { matchId: matchStatsResponse.data['metadata']['matchId'],
+				const matchInformation = { 
+					matchId: matchStatsResponse.data['metadata']['matchId'],
 					gameCreation: matchStatsResponse.data['info']['gameCreation'],
 					gameDuration: matchStatsResponse.data['info']['gameDuration'],
 					gameMode: matchStatsResponse.data['info']['gameMode'],
@@ -108,7 +109,7 @@ async function queryMatches(queriedSummoner) {
 				matchDetailsArray.push(matchInformation);
 			}
 		}
-
+		
 		return {
 			name: queriedSummoner.name,
 			profileIconId: queriedSummoner.profileIconId,
