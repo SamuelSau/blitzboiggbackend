@@ -3,11 +3,8 @@ const getParticipantId = require('./getParticipantId');
 const axios = require('axios');
 const MatchDetails = require('../models/MatchDetails')
 
-const getMatchInformation = async (newMatchids, puuid, queriedSummoner, matchDetailsArray) => {
+const getMatchInformation = async (matchId, puuid, matchDetailsArray) => {
 	try {
-		for (let i = 0; i < newMatchids.length; i++) {
-            let matchId = newMatchids[i];
-
 			const matchStatsResponse = await axios.get(
 				`https://americas.api.riotgames.com/lol/match/v5/matches/${matchId}`
 			);
@@ -168,19 +165,8 @@ const getMatchInformation = async (newMatchids, puuid, queriedSummoner, matchDet
 					if (error) console.log(error);
 					else console.log('MatchDetails document saved successfully');
 				});
-			matchDetailsArray.push(matchInformation);
-		}
-        return {
-            name: queriedSummoner.name,
-			profileIconId: queriedSummoner.profileIconId,
-			summonerLevel: queriedSummoner.summonerLevel,
-			queueType: queriedSummoner.queueType,
-			rank: queriedSummoner.rank,
-			tier: queriedSummoner.tier,
-			wins: queriedSummoner.wins,
-			losses: queriedSummoner.losses,	
-            matchDetailsArray
-        }
+			return matchInformation
+			
 	} catch (error) {
 		console.log(error);
 	}

@@ -1,11 +1,8 @@
 const MatchList = require('../models/MatchList');
 const MatchDetails = require('../models/MatchDetails');
-const getTeamId = require('./getTeamId');
-const getParticipantId = require('./getParticipantId');
 const axios = require('axios');
 const mongoose = require('mongoose');
 const getMatchInformation = require('./getMatchInformation');
-const getRetrievedMatch = require('./getRetrievedMatch');
 
 /* 
 DESCRIPTION: Use data from querySummoner method such as puuid for Riot API call. 
@@ -23,10 +20,10 @@ async function queryMatches(queriedSummoner) {
 			`https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=10`
 		);
 
-		//array of matchIds
+		//array of current matchIds from the Riot API
 		const newMatchIds = matchIdResponse.data;
 
-		//Update matchIds to MatchList
+		//Update the current matchIds to MatchList
 		MatchList.findOneAndUpdate(
 			{ puuid: puuid },
 			{ $set: { matchIds: newMatchIds } },
@@ -39,41 +36,43 @@ async function queryMatches(queriedSummoner) {
 
 		//return details for each match to client
 		const matchDetailsArray = [];
-
+		
 		//query specific player's matches
 		const matches = await MatchList.findOne({ puuid: puuid });
 
 		for (const matchId of matches.matchIds) {
 			//Compare matchId from MatchList and from MatchDetails document
-			const queriedMatchDetails = await MatchDetails.findOne({
+			const matchDatabaseInformation = await MatchDetails.findOne({
 				matchId: matchId,
 			}).select('-_id -summonerId -__v');
 
-			//If matchIds are equal in matchList and matchDetail, then push data from match details to matchDetailsArray
-			if (queriedMatchDetails) {
-				return getRetrievedMatch(
-					queriedSummoner,
-					queriedMatchDetails,
-					matchDetailsArray,
-					newMatchIds
-				);
+			//If matchIds are equal in MatchList and MatchDetails
+			if (matchDatabaseInformation) {
+				matchDetailsArray.push(matchDatabaseInformation);
 			}
 			//If not, then make API calls and write into database
 			else {
-				return getMatchInformation(
-					newMatchIds,
+				const matchInformation = await getMatchInformation(
+					matchId,
 					puuid,
-					queriedSummoner,
 					matchDetailsArray
 				);
+				matchDetailsArray.push(matchInformation);
 			}
 		}
-		return getMatchInformation(
-			newMatchIds,
-			puuid,
-			queriedSummoner,
-			matchDetailsArray
-		);
+
+		//return regardless if not exist in database or first time searching
+		return {
+			name: queriedSummoner.name,
+			profileIconId: queriedSummoner.profileIconId,
+			summonerLevel: queriedSummoner.summonerLevel,
+			queueType: queriedSummoner.queueType,
+			rank: queriedSummoner.rank,
+			tier: queriedSummoner.tier,
+			wins: queriedSummoner.wins,
+			losses: queriedSummoner.losses,
+			matchDetailsArray,
+		};
 	} catch (error) {
 		console.error(error);
 	}

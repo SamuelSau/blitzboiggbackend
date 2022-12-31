@@ -1,11 +1,17 @@
+const MatchDetails = require('../models/MatchDetails');
+
 const getRetrievedMatch = async (
 	queriedSummoner,
-	queriedMatchDetails,
+	matchDatabaseInformation,
 	matchDetailsArray,
 	newMatchIds
 ) => {
 	for (let i = 0; i < newMatchIds.length; i++) {
-		matchDetailsArray.push(queriedMatchDetails);
+		
+		MatchDetails.find({}, function (err, docs) {
+			if (err) return console.error(err);
+			matchDetailsArray.push(matchDatabaseInformation)
+		});
 	}
 	return {
 		name: queriedSummoner.name,
