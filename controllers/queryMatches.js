@@ -15,7 +15,7 @@ async function queryMatches(queriedSummoner) {
 	try {
 		const puuid = queriedSummoner.puuid;
 
-		// @desc Use PUUID from summonerIdResponse to retrieve list of recent matches
+		//Use PUUID from summonerIdResponse to retrieve list of recent matches
 		const matchIdResponse = await axios.get(
 			`https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=10`
 		);
