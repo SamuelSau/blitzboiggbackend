@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Route
-app.get('/summoners/:summonerName', async (req, res) => {
+app.get('https://blitzboiggbackend.herokuapp.com/summoner/:summonerName', async (req, res) => {
 	const summonerName = req.params.summonerName;
 	try {
 		// Retrieve player's (or summoner's) information such as wins, losses, rank, tier
