@@ -4,7 +4,7 @@
 	"description": "BlitzBoi Project",
 	"main": "server.js",
 	"scripts": {
-		"start": "node server",
+		"start": "node server.js",
 		"dev": "nodemon server"
 	},
 	"keywords": [],
