@@ -1,10 +1,9 @@
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT;
-//const dotenv = require('dotenv').config();
+const PORT_NUMBER = process.env.PORT; 
 const cors = require('cors');
-const DB_NAME = process.env.DB_NAME;
-const MONGODB_URI = process.env.MONGODB_URI;
+const DATABASE_NAME = process.env.DB_NAME; 
+const CONNECTION_URI = process.env.MONGODB_URI; 
 const mongoose = require('mongoose');
 const getSummonerInfo = require('./controllers/getSummonerInfo');
 
@@ -32,10 +31,13 @@ app.get('/', async (req, res) => {
 /*	Connect to MongoDB
 	Set up connection using Mongoose
 */
-mongoose.connect(MONGODB_URI, {
+
+mongoose.set("strictQuery", false);
+
+mongoose.connect(CONNECTION_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
-	dbName: DB_NAME,
+	dbName: DATABASE_NAME,
 });
 
 const db = mongoose.connection;
@@ -50,6 +52,6 @@ db.once('open', () => {
 	console.log('Connected to the database successfully.');
 });
 
-app.listen(PORT, () => {
-	console.log(`Serving running on port ${PORT}`);
+app.listen(PORT_NUMBER, () => {
+	console.log(`Serving running on port ${PORT_NUMBER}`);
 });
