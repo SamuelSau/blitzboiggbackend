@@ -13,8 +13,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Route
-app.get('/', async (req, res) => {
-	const summonerName = 'DontThinkJustDo';
+app.post('/', async (req, res) => {
+	
+	//const summonerName = 'DontThinkJustDo';
+	const summonerName = req.body.summonerName; 
 	try {
 		// Retrieve player's (or summoner's) information such as wins, losses, rank, tier
 		const summonerInfo = await getSummonerInfo(summonerName);
