@@ -71,11 +71,11 @@ async function querySummoner(summonerName) {
 			puuid: puuid,
 			profileIconId: profileIconId,
 			summonerLevel: summonerLevel,
-			queueType: summonerData.queueType,
-			tier: summonerData.tier,
-			rank: summonerData.rank,
-			wins: summonerData.wins,
-			losses: summonerData.losses,
+			queueType: summonerData[0].queueType,
+			tier: summonerData[0].tier,
+			rank: summonerData[0].rank,
+			wins: summonerData[0].wins,
+			losses: summonerData[0].losses,
 		};
 
 
